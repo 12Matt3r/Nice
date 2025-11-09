@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC Therapy - Digital Consciousness Clinic</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Menu -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-header">
+            <div class="menu-title">
+                <h1 class="title">NPC THERAPY</h1>
+                <p class="subtitle">Digital Consciousness Clinic</p>
+                <p class="menu-stats">Healed: <span id="menu-healed">0</span>/<span id="menu-total">0</span> • Time: <span id="game-time">00:00</span></p>
+            </div>
+            <div class="menu-toolbar">
+                <button class="btn" onclick="game.openPathToSelf()">PATH TO SELF</button>
+                <button class="btn" onclick="game.openRadio()">📻 RADIO</button>
+                <button class="btn" onclick="game.showLoadModal()">LOAD</button>
+                <button class="btn" onclick="game.showJournal()">JOURNAL</button>
+                <button class="btn" onclick="game.showCharacterCreator()">CREATE</button>
+                <button class="btn" onclick="game.showConnectionMap()">MAP</button>
+                <button class="btn" onclick="game.showCredits()">CREDITS</button>
+            </div>
+        </div>
+        <div class="menu-content">
+            <aside class="menu-roster-panel">
+                <input id="menu-search" type="text" placeholder="Search patients...">
+                <div id="menu-roster-grid" class="roster-grid"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Therapy Session -->
+    <div id="therapy-session" class="screen">
+        <div class="session-header">
+            <h2 id="session-npc-name"></h2>
+            <button class="btn" onclick="game.openRadio()">📻 RADIO</button>
+            <button class="btn" onclick="game.exitSession()">EXIT</button>
+        </div>
+        <div class="session-container">
+            <div class="habitat-display" id="habitat-bg">
+                <div id="therapist-office-overlay"></div>
+                <img id="npc-portrait" class="npc-portrait" alt="NPC portrait" />
+                <div id="npc-thought-bubble" class="thought-bubble" style="display: none;">
+                    <div class="thought-bubble-spinner" style="display: none;"></div>
+                    <div id="npc-thought-image-container"></div>
+                </div>
+                <div id="patient-bio-window" class="patient-bio-window">
+                    <div class="pbw-header">
+                        <span>Patient Dossier</span>
+                        <button id="pbw-close-btn" class="psf-btn">✕</button>
+                    </div>
+                    <div id="pbw-content" class="pbw-content"></div>
+                </div>
+                <div class="dialogue-box">
+                    <div class="speaker" id="speaker"></div>
+                    <div class="dialogue-text" id="dialogue"></div>
+                    <div id="typing-indicator" class="typing-indicator" style="display: none;"><span>.</span><span>.</span><span>.</span></div>
+                    <div id="memory-game-container" class="memory-game-container"></div>
+                    <div class="choices" id="choices">
+                        <!-- Choices will be replaced by an input field -->
+                    </div>
+                    <div id="player-input-area" class="player-input-container">
+                        <input type="text" id="player-response" placeholder="Type your response...">
+                        <button id="send-response-btn" class="send-btn">SEND</button>
+                    </div>
+                    <button id="conclude-session-btn" class="btn conclude-btn" style="display: none;">Attempt to Conclude Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal -->
+    <div id="journal" class="screen">
+        <div class="journal-header">
+            <h1>Patient Journal</h1>
+            <div class="journal-stats">
+                <div>Total Patients: <span id="journal-total">0</span></div>
+                <div>Healed: <span id="journal-healed">0</span></div>
+                <div>Progress: <span id="journal-progress">0%</span></div>
+            </div>
+        </div>
+        <div class="journal-list" id="journal-list"></div>
+        <div style="margin-top: 2rem;">
+            <button class="btn" onclick="game.returnToGame()">RETURN</button>
+        </div>
+    </div>
+
+    <!-- Connection Map -->
+    <div id="connection-map" class="screen">
+        <div class="top-bar">
+            <h2>Connection Map</h2>
+            <div>
+                <button class="btn" onclick="game.openRadio()">📻 RADIO</button>
+                <button class="btn" onclick="game.returnToGame()">RETURN</button>
+            </div>
+        </div>
+        <div class="map-container">
+            <canvas id="map-canvas" class="map-canvas"></canvas>
+            <div id="map-tooltip" class="map-tooltip"></div>
+            <div class="map-controls">
+                <button class="map-btn" onclick="game.resetMapView()">RESET VIEW</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ending Screen -->
+    <div id="ending" class="screen">
+        <h1 class="ending-title" id="ending-title"></h1>
+        <div class="ending-stats">
+            <div>NPCs Healed: <span id="ending-healed">0</span>/<span id="ending-total">0</span></div>
+            <div>Success Rate: <span id="ending-rate">0%</span></div>
+        </div>
+        <p class="ending-message" id="ending-message"></p>
+        <button class="btn" onclick="game.returnToMenu()">RETURN TO MENU</button>
+    </div>
+
+    <!-- Credits Screen -->
+    <div id="credits" class="screen">
+        <div class="credits-content">
+            <h1>CREDITS</h1>
+            <p>A game by MiniMax Agent</p>
+            <br>
+            <p><strong>Concept & Design:</strong> You & I</p>
+            <p><strong>Code:</strong> Your Friendly AI Assistant</p>
+            <p><strong>NPC Concepts:</strong> Community Inspired</p>
+            <p><strong>Font:</strong> 'Space Mono' via Google Fonts</p>
+            <br>
+            <p><strong>Tools Used:</strong></p>
+            <div id="credits-links">
+                <a href="https://websim.com" target="_blank">websim.com</a>
+                <a href="https://chromaawards.com/" target="_blank">Chroma Awards</a>
+                <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
+                <a href="https://glyph.app/" target="_blank">Glyph.app</a>
+                <a href="https://experiments.google/google-jewels" target="_blank">Google Jewels</a>
+                <a href="https://www.minimax.io/" target="_blank">Minimax AI</a>
+                <a href="https://chat.openai.com/" target="_blank">ChatGPT</a>
+                <a href="https://gemini.google.com/" target="_blank">Google Gemini</a>
+            </div>
+            <br>
+            <p>Thank you for playing.</p>
+        </div>
+        <button class="btn" onclick="game.returnToMenu()">RETURN TO MENU</button>
+    </div>
+
+    <!-- Modals -->
+    <div id="save-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Save Game</h2>
+            <p>Copy this code to resume your progress later:</p>
+            <input type="text" class="modal-input" id="save-code" readonly>
+            <div class="modal-buttons">
+                <button class="btn" onclick="game.copySaveCode()">COPY</button>
+                <button class="btn" onclick="game.closeModal('save-modal')">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="load-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Load Game</h2>
+            <p>Enter your save code:</p>
+            <input type="text" class="modal-input" id="load-code" placeholder="Paste save code here">
+            <div class="modal-buttons">
+                <button class="btn" onclick="game.loadGame()">LOAD</button>
+                <button class="btn" onclick="game.closeModal('load-modal')">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="character-creator-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 class="modal-title">Create-an-NPC</h2>
+                <button class="btn" onclick="game.closeModal('character-creator-modal')">CLOSE</button>
+            </div>
+            <div class="creator-container">
+                <div class="creator-form">
+                    <h3>Create with a Prompt</h3>
+                    <p>Describe your new patient and their crisis.</p>
+                    <textarea id="creator-prompt" placeholder="e.g., A sentient vending machine who is sad because it only dispenses expired snacks..."></textarea>
+                    <button id="creator-generate-btn" class="btn">GENERATE</button>
+                    <div class="creator-divider">OR</div>
+                    <h3>Create with Randomness</h3>
+                    <p>Let the system generate a new consciousness.</p>
+                    <button id="creator-randomize-btn" class="btn">RANDOMIZE</button>
+                </div>
+                <div class="creator-preview">
+                    <h3>Preview</h3>
+                    <div id="creator-preview-content">
+                        <p class="placeholder-text">Your new patient will appear here...</p>
+                    </div>
+                     <div id="creator-loader" style="display: none;">Generating consciousness... please wait.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="collectibles-modal" class="modal">
+        <div class="modal-content large">
+             <div class="modal-header">
+                <h2 class="modal-title">Symbolic Collectibles</h2>
+                <button class="btn" onclick="game.closeModal('collectibles-modal')">CLOSE</button>
+            </div>
+            <div id="collectibles-grid" class="collectibles-grid">
+                <!-- Collectibles will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="path-to-self-modal" class="modal">
+        <div class="modal-content large">
+             <div class="modal-header">
+                <h2 class="modal-title">Path to Self</h2>
+                <button class="btn" onclick="game.closeModal('path-to-self-modal')">CLOSE</button>
+            </div>
+            <iframe id="path-to-self-iframe" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Radio Modal -->
+    <div id="radio-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">In-Game Radio</h2>
+                <button class="btn" onclick="game.closeModal('radio-modal')">CLOSE</button>
+            </div>
+            <div style="position:relative;padding-top:56.25%;background:#111;border:1px solid #444;">
+                <div id="radio-player-container" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                    <iframe id="radio-player" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                        src="https://www.youtube.com/embed?listType=playlist&list=PLPug0RGgea9rPoVpu8ytw7dRHLZb4RNZc&enablejsapi=1"
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            <p style="font-size:0.8rem;opacity:0.7;margin-top:0.5rem;">Tip: Audio may start muted due to browser policies. Unmute in the player.</p>
+        </div>
+    </div>
+    <!-- Award Popup -->
+    <div id="award-popup" class="award-popup">
+        <div class="award-title">✨ CHROMA AWARD UNLOCKED</div>
+        <p>Congratulations! You've won the Chroma Award!</p>
+        <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">You've unlocked new patients!</p>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script type="module" src="game.js"></script>
+
+    <!-- Global Loader -->
+    <div id="global-loader" class="global-loader" aria-live="polite" aria-busy="true" style="display:none;">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text">Generating image... this may take ~10 seconds</div>
+        </div>
+    </div>
+    <div id="path-self-float" class="path-self-float" aria-live="polite" style="display:none;">
+        <div class="psf-header">
+            <span>Path to Self</span>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+                <button id="psf-toggle-btn" class="psf-btn" title="Maximize">⤢</button>
+                <button id="psf-close-btn" class="psf-btn" title="Close">✕</button>
+            </div>
+        </div>
+        <iframe id="path-self-float-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+</body>
+</html>

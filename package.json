@@ -1,0 +1,39 @@
+{
+  "name": "npc-therapy-game",
+  "version": "1.0.0",
+  "description": "Interactive therapy simulation exploring digital consciousness and existential crises of NPCs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "therapy",
+    "npc",
+    "consciousness",
+    "existential",
+    "simulation",
+    "interactive",
+    "game",
+    "psychology",
+    "ai-characters"
+  ],
+  "author": "MiniMax Agent",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/12Matt3r/Npctherapy"
+  },
+  "homepage": "https://github.com/12Matt3r/Npctherapy",
+  "bugs": {
+    "url": "https://github.com/12Matt3r/Npctherapy/issues"
+  }
+}
